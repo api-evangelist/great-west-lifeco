@@ -1,0 +1,80 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://developer.empower.com/docs/get-started;
+  https://developer-sandbox.empower.com/ (HTTP 200);
+  https://developer-sandbox.empower.com/node/51
+note: >-
+  Empower does publish a test story, which the first-round review did not
+  capture: a mock-data sandbox that every approved partner starts in, and a
+  separate stage environment with production-like data behind a second request.
+  No test credentials, no magic identifiers and no fixture values are published
+  anonymously - the environments are real but every value in them is issued
+  privately, so none is recorded here. Canada Life publishes no sandbox.
+environments:
+- name: sandbox
+  entity: Empower (U.S. retirement subsidiary)
+  purpose: mock data
+  self_serve: false
+  base_url: null
+  identifier: api-sandbox
+  detail: >-
+    "You can now begin your development and call our APIs in a sandbox
+    environment that will return production-like mock data." The getting-started
+    guide refers to the environment by the token "api-sandbox": "Once you have
+    configured your application to call our APIs in the api-sandbox returning
+    mock data...". The host itself is not published; the sandbox base URL
+    arrives with the credential package.
+  credentials: >-
+    Same issuance path as production - API Key, Client ID, Client Secret (or
+    PKI onboarding documentation) and the authorization service endpoint are
+    emailed to the approved company contact after a "Get Access" request is
+    reviewed.
+- name: stage
+  entity: Empower (U.S. retirement subsidiary)
+  purpose: production-like data, broader test scenarios
+  self_serve: false
+  base_url: null
+  detail: >-
+    "you may want to move to our stage environment that can provide more
+    testing scenarios with production like data. Contact us for access to the
+    stage environment including API keys, Client registration, and test data."
+    Test data is supplied by Empower per engagement; no test dataset is
+    published.
+- name: production
+  entity: Empower (U.S. retirement subsidiary)
+  self_serve: false
+  detail: >-
+    Promotion is a human step - "For guidance to begin using your API in a
+    production environment, contact us by clicking on Support at the top of
+    this page."
+  url: https://developer.empower.com/docs/go-production
+portals:
+- url: https://developer-sandbox.empower.com/
+  status: 200
+  detail: >-
+    A publicly reachable sandbox instance of the Empower developer portal,
+    mirroring the production portal's catalog and guides. Its catalog exposes
+    an extra "test only" category filter alongside "workflow", "financial" and
+    "production" - the production portal shows only the latter three. Content
+    is otherwise identical; no additional API or specification is exposed.
+- url: https://developer.empower.com/
+  status: 200
+  detail: Production developer portal.
+test_values:
+  published: false
+  test_keys: []
+  test_identifiers: []
+  detail: >-
+    No test API key, test client ID, magic participant/plan identifier, test
+    account number or fixture payload is published on any public page. Every
+    credential and every test dataset is issued privately after approval.
+test_clocks:
+  supported: unpublished
+key_prefixes:
+  published: false
+  detail: >-
+    No test-vs-live key prefix convention is published. The getting-started
+    guide shows illustrative placeholder credentials only (an API Key, Client
+    ID and Client Secret rendered as opaque random strings) with no prefix
+    scheme.

@@ -1,0 +1,50 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.empower.com/api-catalog/oauth2-api
+docs: https://developer.empower.com/api-catalog/oauth2-api
+note: >-
+  Empower publishes per-API "Release Notes" on the catalog pages, and this is
+  the only versioned change record readable anonymously anywhere in the group.
+  The notes are undated - they carry semantic version numbers only - so no
+  release dates are recorded here rather than inferred. The Balance API catalog
+  page carries no release notes at all. Canada Life publishes no changelog.
+scheme: semver
+scope: per-API release notes on the public catalog page
+dated: false
+current_version:
+  api: Empower OAuth 2.0 API
+  version: 2.3.0
+entries:
+- api: Empower OAuth 2.0 API
+  version: 2.3.0
+  date: null
+  breaking: false
+  additions:
+  - Add supported query parameters for /auth endpoint.
+  highlights: >-
+    Expands the query-parameter surface of the /auth endpoint. The parameters
+    themselves are named only in the login-gated reference documentation.
+- api: Empower OAuth 2.0 API
+  version: 1.3.1
+  date: null
+  breaking: false
+  additions:
+  - /token and /auth endpoint accept optional x-api-key http header.
+  changes:
+  - >-
+    /token endpoint can result 400 status code with "invalid_grant" error
+    message if requested oauth scope is not configured in oauth client profile.
+  highlights: >-
+    Documents the API-key header as optional on both OAuth endpoints and the
+    invalid_grant failure mode for unconfigured scopes - the only published
+    evidence that Empower enforces a scope vocabulary.
+other_change_surfaces:
+- name: Planned deployment cadence
+  url: https://developer.empower.com/docs/status-and-maintenance
+  detail: Deliverables deploy the second weekend of every month.
+- name: Coming-soon API products
+  url: https://www.empower.com/financial-professionals/experience/apis
+  detail: >-
+    Forward-looking product list (DC participant personal rate of return, DC
+    plan provisions, DC investments) - captured in
+    lifecycle/great-west-lifeco-lifecycle.yml as the roadmap.

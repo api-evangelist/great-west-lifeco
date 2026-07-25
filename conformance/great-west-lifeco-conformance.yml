@@ -1,0 +1,142 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://www.empower.com/financial-professionals/experience/apis;
+  https://www.empower.com/financial-professionals/about-empower/cybersecurity;
+  https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki;
+  https://developer.empower.com/api-catalog/balance-api;
+  https://api.canadalife.com/.well-known/openid-configuration
+note: >-
+  Standards posture for the Great-West Lifeco group. Every "conforms: true"
+  below is backed by either a live probe or a verbatim claim on a public page;
+  claims that are asserted by the provider but not independently verifiable
+  anonymously are marked claimed: true so the distinction survives. No OpenAPI
+  exists in the group, so nothing is derived from a spec.
+standards:
+- id: oauth2
+  conforms: true
+  claimed: false
+  evidence: >-
+    Live OIDC discovery document on the Canada Life gateway publishes
+    token_endpoint https://api.canadalife.com/oauth2/v1/generate,
+    revocation_endpoint and three token_endpoint_auth_methods_supported.
+    Empower documents the client_credentials grant, HTTP Basic client
+    authentication and a bearer access token.
+- id: oidc
+  conforms: true
+  claimed: false
+  evidence: >-
+    https://api.canadalife.com/.well-known/openid-configuration returns HTTP
+    200 with issuer, jwks_uri, userinfo_endpoint, response_types_supported and
+    id_token_signing_alg_values_supported (RS256). Empower states "Empower uses
+    OAuth2 and OpenID Connect standards to protect our APIs."
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server returns 404 on every host in the
+    group; only the OIDC-flavoured discovery document is served.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: No /.well-known/security.txt on any group host.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404/403 on every host.
+- id: fapi
+  conforms: partial
+  claimed: true
+  evidence: >-
+    "Starting Q4 2024 - in support of higher API security required for
+    Financial-grade APIs (FAPI), Empower APIs will be requiring the use
+    asymmetric (public-key based) method ... for client authentication method",
+    and "Our API security standards align with industry standards ... include
+    OAuth 2.0 with OpenID Connect, and the early adoption of Financial-grade
+    API (FAPI) standards." private_key_jwt client authentication is a genuine
+    FAPI building block, but no FAPI conformance certification is published and
+    the Canada Life gateway still advertises client_secret_basic /
+    client_secret_post, which FAPI 2.0 does not permit.
+- id: fdx-financial-data-exchange
+  conforms: partial
+  claimed: true
+  evidence: >-
+    "Financial data exchange - Access to a data-sharing ecosystem utilizing
+    industry-standard protocols" is a named product in the Empower API line-up.
+    No FDX version, no FDX API surface and no FDX certification is published.
+- id: owasp-api-security
+  conforms: true
+  claimed: true
+  evidence: >-
+    "Our API security standards align with industry standards. OWASP API
+    Security guidance"; the cybersecurity page adds "Application security
+    testing (SAST/DAST) aligned to OWASP standards" and "Application and API
+    penetration testing".
+- id: soc2-type-2
+  conforms: true
+  claimed: true
+  evidence: '"Unqualified SOC 2 Type 2 third-party attestation" (Empower cybersecurity page).'
+- id: iso-27001
+  conforms: partial
+  claimed: true
+  evidence: >-
+    "Cybersecurity policies aligned with NIST 800-53, NIST CSF, and ISO 27001" -
+    stated as policy alignment, not as a certification.
+- id: nist-800-53
+  conforms: partial
+  claimed: true
+  evidence: Policy alignment claimed on the Empower cybersecurity page.
+- id: nist-csf
+  conforms: partial
+  claimed: true
+  evidence: Policy alignment claimed on the Empower cybersecurity page.
+- id: openapi
+  conforms: partial
+  claimed: true
+  evidence: >-
+    The Balance API catalog page states it was "Developed following industry
+    Open API Specification standards", but no OpenAPI document is served
+    anonymously anywhere in the group - every spec probe against
+    developer.empower.com, api.empower.com, api.canadalife.com and the sandbox
+    portal returned 404 or 403.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Neither gateway emits application/problem+json; both use proprietary error
+    envelopes (see errors/great-west-lifeco-problem-types.yml).
+- id: asyncapi
+  conforms: false
+  evidence: No event, webhook or streaming surface is documented anywhere in the group.
+- id: acord
+  conforms: false
+  evidence: >-
+    No ACORD, AL3, NGDS or IVANS reference on greatwestlifeco.com,
+    canadalife.com or developer.empower.com - consistent with a life-and-health
+    carrier and a U.S. retirement recordkeeper rather than a P&C carrier.
+- id: cdr-open-banking-canada
+  conforms: false
+  evidence: >-
+    Canada's Consumer-Driven Banking framework excludes insurance outright and
+    there is no open-insurance mandate in Canada, so no regulated data-sharing
+    interface is required or offered.
+- id: psd2
+  conforms: false
+  evidence: Not applicable - no EU payment-services business line with an API mandate.
+- id: mtls
+  conforms: false
+  evidence: >-
+    Mutual TLS is not documented; Empower's stated client-authentication
+    hardening path is private_key_jwt rather than tls_client_auth.
+security_controls_published:
+  source: https://www.empower.com/financial-professionals/about-empower/cybersecurity
+  controls:
+  - Encryption in transit (minimum TLS 1.2)
+  - Encryption at rest (minimum AES-256)
+  - Application security testing (SAST/DAST) aligned to OWASP standards
+  - Application and API penetration testing
+  - Annual independent penetration testing
+  - Internal and external vulnerability scanning
+  - Intrusion Prevention System (IPS)
+  - Multi-layered firewall protection
+  - API gateway, web application firewall (WAF) and network segmentation
+  - DDoS mitigation, rate limiting, throttling and payload validation
+  - Zero-trust architecture foundation
+  - Annual business continuity and disaster recovery testing
+  - Formal AI Governance Committee, AI Risk Management Policy and documented AI risk assessments

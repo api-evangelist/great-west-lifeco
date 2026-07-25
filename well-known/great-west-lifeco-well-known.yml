@@ -1,0 +1,137 @@
+generated: '2026-07-25'
+method: searched
+source: live probes of every Great-West Lifeco group API and portal host
+note: >-
+  Probed the /.well-known/ discovery surface on every host reachable across the
+  group: the holding company site, the Canadian operating brand and its API
+  gateway, the Empower developer portal and its API gateway, and Irish Life.
+  Exactly one document is served anonymously anywhere in the group: the OpenID
+  Connect discovery document on the Canada Life API gateway
+  (https://api.canadalife.com/.well-known/openid-configuration), which was
+  missed by the first-round review. It is saved verbatim alongside this index.
+  No security.txt (RFC 9116), no RFC 8414 oauth-authorization-server document,
+  no RFC 9727 api-catalog and no ai-plugin.json is published on any host.
+hosts:
+- host: https://api.canadalife.com
+  entity: Canada Life (Canadian operating brand)
+  gateway: Apigee behind a Google Cloud load balancer (via 1.1 google)
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: great-west-lifeco-openid-configuration.json
+    note: >-
+      Real OIDC discovery document. issuer https://api.canadalife.com; token
+      endpoint /oauth2/v1/generate; jwks_uri /oauth2/v1/jwks (returns live RSA
+      keys, HTTP 200); revocation /oauth2/v1/revoke; userinfo /oauth2/v1/userinfo
+      (403 anonymously). authorization_endpoint is literally published as
+      /oauth2/v1/authorize-NOT-SUPPORTED, i.e. only machine-to-machine grants
+      are offered. scopes_supported is an empty array.
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 403
+- host: https://developer.empower.com
+  entity: Empower (U.S. retirement subsidiary) developer portal
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://api.empower.com
+  entity: Empower API gateway (AWS API Gateway; all paths answer {"message":"Forbidden"})
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+- host: https://www.empower.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://www.greatwestlifeco.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://www.canadalife.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://www.irishlife.ie
+  entity: Irish Life (Ireland)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://api.irishlife.ie
+  entity: Irish Life API host
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 000
+    note: >-
+      Host has an A record (4.207.220.221, Azure) but no listener answers on
+      443 from the public internet; every request times out.
+security_txt:
+  published: false
+  note: >-
+    No /.well-known/security.txt on any group host. The Great-West Lifeco
+    Internet Security Statement (https://www.greatwestlifeco.com/internet-security.html)
+    is a consumer-facing statement about encryption, cookies, session timeouts
+    and phishing; it publishes no vulnerability-reporting address and no
+    responsible-disclosure or bug-bounty program.

@@ -1,0 +1,99 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://developer.empower.com/docs/get-started;
+  https://developer.empower.com/api-catalog/oauth2-api;
+  https://developer.empower.com/docs/status-and-maintenance;
+  https://www.empower.com/financial-professionals/experience/apis;
+  live probes of https://api.canadalife.com and https://api.empower.com
+note: >-
+  Cross-cutting request/response semantics for the two production API surfaces
+  in the Great-West Lifeco group. Every field is either quoted from a public
+  page or observed on a live probe. Fields the providers do not publish are
+  recorded as null/unpublished rather than guessed - which is most of them,
+  because all reference documentation sits behind login.
+authentication:
+  style: api-key-plus-oauth2-bearer
+  detail: >-
+    Empower: x-api-key request header (issued after access approval) carried
+    alongside an OAuth 2.0 client_credentials bearer token in the Authorization
+    header; private_key_jwt client authentication required since Q4 2024.
+    Canada Life: OAuth 2.0 client credentials against
+    https://api.canadalife.com/oauth2/v1/generate, Apigee consumer-key
+    entitlement per API product.
+  artifact: authentication/great-west-lifeco-authentication.yml
+idempotency:
+  supported: unpublished
+  header: null
+  detail: >-
+    No idempotency key, replay window or retry-safety contract is documented on
+    any public page in the group. The publicly listed APIs (balances, census,
+    eligibility, YTD contributions) are read-oriented; the write-side products
+    named on the Empower APIs page (DC deferrals, DC loans) would be where an
+    idempotency contract mattered, and none is published.
+pagination:
+  style: unpublished
+  detail: >-
+    Not documented. The Balance API is described as returning a "summarized
+    view of different balances in JSON format which can be consumed & exposed
+    to the end user as-is", implying a single-document response rather than a
+    collection, but no pagination parameters are published.
+field_expansion:
+  supported: unpublished
+metadata:
+  supported: unpublished
+request_tracing:
+  header: null
+  response_field: referenceId
+  detail: >-
+    The Canada Life gateway returns a per-request "referenceId" inside every
+    errors[] entry (e.g. ac7100b5-079d-411f-8d2b-92ffc9c814cb533073) - the
+    correlation handle to quote to support. No request-id request header is
+    documented. Empower publishes no tracing convention.
+versioning:
+  scheme: uri-path-plus-semver
+  detail: >-
+    Canada Life pins the major version in the path (/oauth2/v1/...). Empower
+    versions its API products with semantic versions surfaced in public release
+    notes (OAuth 2.0 API v2.3.0, v1.3.1); no version header or path segment is
+    published because base URLs are gated.
+  artifact: lifecycle/great-west-lifeco-lifecycle.yml
+error_envelope:
+  rfc9457: false
+  detail: >-
+    Two distinct proprietary envelopes - Canada Life errors[] with
+    apiId/httpCode/errorId/summary/detail/referenceId/info, Empower the bare
+    AWS API Gateway {"message": ...}. Neither serves application/problem+json.
+  artifact: errors/great-west-lifeco-problem-types.yml
+rate_limiting:
+  published_limits: false
+  signalling: unpublished
+  detail: >-
+    Empower states its defences include "DDoS mitigation, rate limiting,
+    throttling, and payload validation" delivered by an API gateway and WAF on
+    top of a zero-trust architecture, but publishes no numeric limits, no
+    RateLimit response headers and no 429 contract. Canada Life publishes
+    nothing. No rate-limits artifact is emitted because there are no limits to
+    record.
+  source: https://www.empower.com/financial-professionals/experience/apis
+transport:
+  protocol: REST over HTTPS
+  format: JSON
+  tls: >-
+    Empower states minimum TLS 1.2 in transit; live probes negotiated TLS 1.3
+    on www.greatwestlifeco.com and developer.empower.com.
+  gateways:
+  - entity: Canada Life
+    stack: Apigee behind a Google Cloud load balancer
+  - entity: Empower
+    stack: AWS API Gateway
+maintenance_window:
+  detail: >-
+    "Our maintenance window for enhancements and upgrades to our APIs is Sunday
+    morning from 12:00 am to 12:00 pm MST. During this time API services may be
+    temporarily unavailable." Deliverables deploy the second weekend of every
+    month, which "may cause some latency in APIs during the deployment window."
+  source: https://developer.empower.com/docs/status-and-maintenance
+webhooks:
+  published: false
+  detail: No event, webhook, callback or streaming surface is documented anywhere in the group.

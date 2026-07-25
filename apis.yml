@@ -15,18 +15,28 @@ description: >-
   matters while market conduct is regulated province by province, and where no
   open-insurance mandate exists (Consumer-Driven Banking excludes insurance
   outright). Its API posture reflects that absence of a forcing function: the
-  Great-West Lifeco corporate site and the Canadian operating brand,
-  canadalife.com, publish no developer portal, no API documentation and no
-  machine-readable specifications, and probes of developer/api/docs subdomains
-  and /developers, /api, /developer, /partners and /integrations paths return
-  no such surface. The only public developer surface anywhere in the group
-  belongs to the U.S. retirement subsidiary Empower, whose developer portal
-  lists a small production API catalog publicly but places every piece of
-  reference documentation behind login and issues API keys and OAuth client
-  credentials only after an access request is reviewed and approved. There is
-  no downloadable OpenAPI, no public Postman collection, no webhook or event
-  catalog, and no ACORD, AL3 or IVANS reference anywhere on the group's public
-  properties.
+  Great-West Lifeco corporate site and the Canadian consumer site
+  canadalife.com publish no developer portal and no API documentation, and
+  probes of developer/docs subdomains and /developers, /api, /developer,
+  /partners and /integrations paths return no such surface. Two production API
+  surfaces nevertheless exist inside the group, both partner-gated and
+  unrelated to each other. Canada Life runs an Apigee gateway at
+  api.canadalife.com that serves a real OpenID Connect discovery document
+  anonymously - issuer, JWKS, token, revocation and userinfo endpoints, with
+  the authorization endpoint deliberately published as
+  "authorize-NOT-SUPPORTED" and an empty scopes_supported array - and whose
+  error envelopes point to https://apimarketplace.canadalife.com, a
+  digitalML-hosted API marketplace that does not resolve publicly. The U.S.
+  retirement subsidiary Empower runs a genuine developer portal that lists two
+  production APIs publicly while naming eight API products plus three coming
+  soon on its marketing site, places every piece of reference documentation
+  behind login, documents an x-api-key header with OAuth 2.0 client_credentials
+  and private_key_jwt in support of FAPI, publishes release notes, a
+  maintenance window and a mock-data sandbox, and issues credentials only after
+  a reviewed access request. There is no downloadable OpenAPI anywhere, no
+  public Postman collection, no SDK, no MCP server, no webhook or event
+  catalog, and no ACORD, AL3 or IVANS reference on any public property in the
+  group.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Insurance
@@ -57,8 +67,14 @@ apis:
     documentation, please login") and access is granted only through the portal
     "Get Access" request flow, after which an API key and OAuth client
     credentials are delivered by secure email. No machine-readable
-    specification, base URL, or endpoint list is published anonymously.
+    specification, base URL, or endpoint list is published anonymously. The
+    baseURL below is the group's probe-observed U.S. API gateway host
+    (api.empower.com, AWS API Gateway, which answers {"message":"Forbidden"} to
+    every anonymous request); the documented base URL is delivered privately
+    with the credential package, and Empower's own product page lists this API
+    as "DC participant balances" among eight named API products.
   humanURL: https://developer.empower.com/api-catalog/balance-api
+  baseURL: https://api.empower.com
   tags:
   - Retirement
   - Balances
@@ -70,6 +86,12 @@ apis:
     url: https://developer.empower.com/api-catalog/balance-api
   - type: Documentation
     url: https://developer.empower.com/docs/get-started
+  - type: Sandbox
+    url: sandbox/great-west-lifeco-sandbox.yml
+  - type: Conventions
+    url: conventions/great-west-lifeco-conventions.yml
+  - type: ErrorCatalog
+    url: errors/great-west-lifeco-problem-types.yml
 - aid: great-west-lifeco:empower-oauth-2-0-api
   name: Empower OAuth 2.0 API
   description: >-
@@ -83,8 +105,11 @@ apis:
     integration, and is moving to asymmetric private-key JWT client
     authentication (PKI) in line with Financial-grade API (FAPI) practice.
     Reference documentation is behind login and the authorization service
-    endpoint is communicated privately to approved partners.
+    endpoint is communicated privately to approved partners. The baseURL below
+    is the probe-observed U.S. API gateway host; the authorization service host
+    itself is never published.
   humanURL: https://developer.empower.com/api-catalog/oauth2-api
+  baseURL: https://api.empower.com
   tags:
   - OAuth
   - Authorization
@@ -96,17 +121,67 @@ apis:
     url: https://developer.empower.com/api-catalog/oauth2-api
   - type: Authentication
     url: https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki
+  - type: ChangeLog
+    url: changelog/great-west-lifeco-changelog.yml
+    name: Empower OAuth 2.0 API release notes (v2.3.0, v1.3.1)
+  - type: OAuthScopes
+    url: scopes/great-west-lifeco-scopes.yml
+- aid: great-west-lifeco:canada-life-api-gateway
+  name: Canada Life API Gateway (OAuth 2.0 / OpenID Connect)
+  description: >-
+    The production API gateway of Canada Life, Great-West Lifeco's Canadian
+    operating brand, at api.canadalife.com. It publishes no documentation, but
+    it does serve a real OpenID Connect discovery document anonymously at
+    /.well-known/openid-configuration (HTTP 200) - the only machine-readable
+    contract published anywhere in the Great-West Lifeco group. The document
+    declares issuer https://api.canadalife.com, a token endpoint at
+    /oauth2/v1/generate, live JWKS at /oauth2/v1/jwks (HTTP 200), revocation at
+    /oauth2/v1/revoke and userinfo at /oauth2/v1/userinfo, with RS256 ID-token
+    signing and client_secret_basic / client_secret_post / client_secret_jwt
+    client authentication. The authorization endpoint is deliberately published
+    as /oauth2/v1/authorize-NOT-SUPPORTED, so the gateway is machine-to-machine
+    only, and scopes_supported is an empty array. Anonymous calls to protected
+    paths return an Apigee error envelope naming the Consumer-Key and pointing
+    to https://apimarketplace.canadalife.com - a digitalML-hosted Canada Life
+    API marketplace whose hostname CNAMEs to canadalife.digitalml.com and does
+    not resolve on the public internet. Entitlement is therefore partner-only,
+    with no public request path.
+  humanURL: https://www.canadalife.com/
+  baseURL: https://api.canadalife.com
+  tags:
+  - OAuth
+  - OpenID Connect
+  - Authorization
+  - Canada
+  - Partner Gated
+  properties:
+  - type: OpenIDConnect
+    url: well-known/great-west-lifeco-openid-configuration.json
+  - type: Authentication
+    url: authentication/great-west-lifeco-authentication.yml
+  - type: ErrorCatalog
+    url: errors/great-west-lifeco-problem-types.yml
 common:
+- type: DomainSecurity
+  url: security/great-west-lifeco-domain-security.yml
 - type: Website
   url: https://www.greatwestlifeco.com/
 - type: About
   url: https://www.greatwestlifeco.com/who-we-are/about-us.html
 - type: News
   url: https://www.greatwestlifeco.com/news-and-events/news.html
+- type: DeveloperPortal
+  url: https://developer.empower.com/
+  name: Empower Retirement Developer Portal (U.S. subsidiary)
 - type: Portal
   url: https://developer.empower.com/
   name: Empower Retirement Developer Portal (U.S. subsidiary)
 - type: Documentation
+  url: https://developer.empower.com/docs/get-started
+- type: APIReference
+  url: https://developer.empower.com/api-catalog
+  name: Empower API catalog (reference documentation behind login)
+- type: GettingStarted
   url: https://developer.empower.com/docs/get-started
 - type: Support
   url: https://developer.empower.com/support
@@ -114,6 +189,42 @@ common:
   url: https://developer.empower.com/docs/status-and-maintenance
 - type: TermsOfService
   url: https://developer.empower.com/DevTerms
+- type: SignUp
+  url: https://developer.empower.com/hybridauth-connect/authenticate/cognito
+  name: Empower developer portal registration (Sign Up via the Log in screen)
+- type: PrivacyPolicy
+  url: https://www.greatwestlifeco.com/privacy-policy.html
+- type: Roadmap
+  url: https://www.empower.com/financial-professionals/experience/apis
+  name: Empower APIs - live products plus a published "Coming soon" list
+- type: Compliance
+  url: https://www.empower.com/financial-professionals/about-empower/cybersecurity
+  name: Empower Cybersecurity - SOC 2 Type 2, ISO 27001 / NIST 800-53 / NIST CSF alignment
+- type: TrustCenter
+  url: security/great-west-lifeco-trust-center.yml
+- type: Authentication
+  url: authentication/great-west-lifeco-authentication.yml
+- type: OAuthScopes
+  url: scopes/great-west-lifeco-scopes.yml
+- type: WellKnown
+  url: well-known/great-west-lifeco-well-known.yml
+- type: OpenIDConnect
+  url: well-known/great-west-lifeco-openid-configuration.json
+  name: Canada Life gateway OIDC discovery document (harvested verbatim)
+- type: Conventions
+  url: conventions/great-west-lifeco-conventions.yml
+- type: ErrorCatalog
+  url: errors/great-west-lifeco-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/great-west-lifeco-lifecycle.yml
+- type: ChangeLog
+  url: changelog/great-west-lifeco-changelog.yml
+- type: Sandbox
+  url: sandbox/great-west-lifeco-sandbox.yml
+- type: Conformance
+  url: conformance/great-west-lifeco-conformance.yml
+- type: LLMsTxt
+  url: llms/great-west-lifeco-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -208,6 +208,72 @@ findings:
       documented: false
     - protocol: gRPC
       documented: false
+enrichmentRoundTwo:
+  date: '2026-07-25'
+  note: >-
+    Second enrichment pass. Three material corrections to the first-round
+    findings, all backed by live probes, plus the artifact set now in this
+    repository.
+  corrections:
+    - finding: Canada Life DOES serve an anonymous machine-readable contract.
+      detail: >-
+        The first round recorded api.canadalife.com as "403, undocumented, not
+        a portal" and moved on. In fact
+        https://api.canadalife.com/.well-known/openid-configuration returns
+        HTTP 200 with a real OpenID Connect discovery document (issuer,
+        /oauth2/v1/generate token endpoint, /oauth2/v1/jwks which itself
+        returns live RSA keys at HTTP 200, /oauth2/v1/revoke, /oauth2/v1/userinfo),
+        and the authorization endpoint is deliberately published as
+        /oauth2/v1/authorize-NOT-SUPPORTED. This is the only machine-readable
+        contract published anywhere in the group. Saved verbatim to
+        well-known/great-west-lifeco-openid-configuration.json.
+    - finding: Canada Life runs a digitalML API marketplace.
+      detail: >-
+        Every Apigee error envelope from api.canadalife.com carries
+        "info": "https://apimarketplace.canadalife.com". That hostname CNAMEs
+        to canadalife.digitalml.com (the digitalML ignite platform) but has no
+        public A record and does not resolve, so the marketplace is
+        internal/partner-only. The gateway also names the "Consumer-Key" in its
+        403 body, confirming Apigee, fronted by a Google Cloud load balancer.
+    - finding: Empower's API line-up is far larger than the two-entry public catalog.
+      detail: >-
+        https://www.empower.com/financial-professionals/experience/apis names
+        eight API products - DC payroll bundle, DC census/indicative, Financial
+        data exchange, DC participant balances, DC deferrals, DC loans, DC
+        participant YTD contributions, DC participant eligibility - plus three
+        "coming soon" (DC participant personal rate of return, DC plan
+        provisions, DC investments). Only DC participant balances (as Balance
+        API) and the OAuth 2.0 API surface in the anonymous catalog. The page
+        also documents security posture: OWASP API Security guidance, OAuth 2.0
+        with OpenID Connect, early adoption of FAPI, and gateway/WAF rate
+        limiting, throttling and payload validation.
+    - finding: A sandbox exists and was not captured.
+      detail: >-
+        The Empower get-started guide documents an "api-sandbox" mock-data
+        environment every approved partner starts in, plus a separate stage
+        environment with production-like data. A publicly reachable sandbox
+        instance of the portal runs at https://developer-sandbox.empower.com/
+        (HTTP 200) and its catalog carries an extra "test only" category. No
+        test credentials or fixture values are published.
+    - finding: Published compliance posture was not captured.
+      detail: >-
+        https://www.empower.com/financial-professionals/about-empower/cybersecurity
+        names an "Unqualified SOC 2 Type 2 third-party attestation" and
+        cybersecurity policies "aligned with NIST 800-53, NIST CSF, and ISO
+        27001", plus SAST/DAST aligned to OWASP, annual independent penetration
+        testing, minimum TLS 1.2 in transit and AES-256 at rest.
+  confirmed:
+    - No OpenAPI, Swagger, GraphQL SDL, gRPC/protobuf, AsyncAPI, MCP server,
+      public Postman collection or first-party SDK anywhere in the group.
+      Registry searches (npm, PyPI) and GitHub org probes returned nothing
+      claimed as a company property; github.com/Empower-Retirement exists but
+      is empty (0 public repos, no metadata).
+    - No /.well-known/security.txt, no vulnerability disclosure program and no
+      bug bounty on any host. probe-security-programs.py returned vdp=none.
+    - No deprecation policy, no SLA, no webhook or event surface, no
+      idempotency contract, no published rate limits.
+    - api.irishlife.ie now has an A record (4.207.220.221, Azure) but no
+      listener answers on 443; every request times out.
 sources:
   - url: https://www.greatwestlifeco.com/
     type: Website

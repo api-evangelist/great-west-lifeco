@@ -1,0 +1,82 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  live responses from https://api.canadalife.com/* (Apigee gateway) and
+  https://api.empower.com/* (AWS API Gateway); Empower OAuth 2.0 API public
+  release notes at https://developer.empower.com/api-catalog/oauth2-api
+format: proprietary
+note: >-
+  No group API publishes an error reference and no OpenAPI exists to derive
+  4xx/5xx responses from. What follows was observed live against the two
+  production gateways plus the one error case documented in Empower's public
+  release notes. Neither gateway emits RFC 9457 application/problem+json; the
+  Canada Life gateway uses its own errors[] envelope and the Empower gateway
+  uses the bare AWS API Gateway message envelope.
+envelopes:
+- entity: Canada Life
+  host: https://api.canadalife.com
+  content_type: application/json
+  shape: '{"errors": [{"apiId", "httpCode", "errorId", "summary", "detail", "referenceId", "info"}]}'
+  fields:
+    apiId: Name of the Apigee proxy that produced the error (e.g. oauth2-v1-proxy, well-known-v1-proxy).
+    httpCode: HTTP status as a string.
+    errorId: Zero-padded provider error code (e.g. "002", "096").
+    summary: Short human-readable title.
+    detail: Longer human-readable explanation.
+    referenceId: Per-request correlation id for support.
+    info: Documentation pointer - always https://apimarketplace.canadalife.com.
+  rfc9457: false
+- entity: Empower
+  host: https://api.empower.com
+  content_type: application/json
+  shape: '{"message": "..."}'
+  note: >-
+    Unauthenticated requests to every path return {"message":"Forbidden"} - the
+    default AWS API Gateway envelope. No provider-specific error body is
+    reachable anonymously.
+  rfc9457: false
+problems:
+- status: 403
+  entity: Canada Life
+  error_id: '002'
+  title: Not Authorized
+  detail: Consumer-Key provided is not authorized for this resource
+  source_operation: 'observed: GET https://api.canadalife.com/oauth2/v1/userinfo'
+  remediation: >-
+    The caller's Apigee consumer key (client credential) is not entitled to the
+    requested API product. Entitlement is granted through the Canada Life API
+    marketplace, not self-serve.
+- status: 404
+  entity: Canada Life
+  error_id: '096'
+  title: Requested resource not found
+  detail: Requested resource not found
+  source_operation: 'observed: GET https://api.canadalife.com/.well-known/api-catalog'
+  remediation: Path is not routed by any Apigee proxy on the gateway.
+- status: 403
+  entity: Canada Life
+  title: Forbidden (edge)
+  detail: >-
+    Requests to undocumented paths are terminated at the Google Cloud load
+    balancer with a bare HTML 403 before reaching Apigee, so no errors[]
+    envelope is returned.
+  source_operation: 'observed: GET https://api.canadalife.com/openapi.json'
+- status: 403
+  entity: Empower
+  title: Forbidden
+  detail: '{"message":"Forbidden"}'
+  source_operation: 'observed: GET https://api.empower.com/'
+  remediation: >-
+    Supply the x-api-key header issued after access approval plus a bearer
+    token from the private authorization service endpoint.
+- status: 400
+  entity: Empower
+  title: invalid_grant
+  detail: >-
+    Returned by the /token endpoint when the requested OAuth scope is not
+    configured in the OAuth client profile.
+  source_operation: 'documented: Empower OAuth 2.0 API release notes v1.3.1'
+  remediation: >-
+    Request the missing scope through the Empower access-request flow so it is
+    added to the client profile; scopes cannot be self-provisioned.
+  spec: RFC 6749 section 5.2

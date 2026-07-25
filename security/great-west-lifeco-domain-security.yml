@@ -1,0 +1,63 @@
+generated: '2026-07-25'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.greatwestlifeco.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 26 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: developer.empower.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 29 09:47:12 2026 GMT
+  hsts: true
+  hsts_max_age: 15552000
+- host: api.empower.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  1 06:21:50 2026 GMT
+  hsts: null
+  note: >-
+    AWS API Gateway. Every anonymous request returns {"message":"Forbidden"},
+    so no HSTS header is observable.
+- host: www.canadalife.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 26 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+- host: api.canadalife.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Feb 10 23:59:59 2027 GMT
+  hsts: null
+  note: >-
+    Apigee behind a Google Cloud load balancer. Anonymous requests to
+    undocumented paths return HTTP 403 at the edge, so no HSTS header is
+    observable; /.well-known/openid-configuration and /oauth2/v1/jwks do
+    answer 200.
+domains:
+- domain: greatwestlifeco.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: empower.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: canadalife.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_note: >-
+    _dmarc.canadalife.com CNAMEs to _dmarc.reject.canadalife.com; policy
+    v=DMARC1; p=reject with Proofpoint rua/ruf reporting.

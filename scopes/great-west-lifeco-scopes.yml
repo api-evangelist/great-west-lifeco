@@ -1,0 +1,53 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://api.canadalife.com/.well-known/openid-configuration (HTTP 200);
+  https://developer.empower.com/api-catalog/oauth2-api;
+  https://developer.empower.com/docs/get-started
+docs: null
+note: >-
+  Both OAuth surfaces in the group are real and both withhold their scope
+  vocabulary. This artifact records the authorization-server metadata that IS
+  published and states plainly that no scope names are. Nothing is invented -
+  the scopes list is empty because the providers publish an empty one.
+schemes:
+- name: CanadaLifeGatewayOIDC
+  entity: Canada Life
+  source: well-known/great-west-lifeco-openid-configuration.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.canadalife.com/oauth2/v1/generate
+    authorizationUrl: null
+    note: >-
+      authorization_endpoint is published as
+      https://api.canadalife.com/oauth2/v1/authorize-NOT-SUPPORTED - the
+      interactive flow is explicitly disabled.
+  scopes_supported: []
+  scopes_supported_note: >-
+    The discovery document advertises "scopes_supported": [] - an empty array.
+    Scopes are provisioned per client profile rather than advertised.
+- name: EmpowerOAuth2
+  entity: Empower (U.S. retirement subsidiary)
+  source: https://developer.empower.com/api-catalog/oauth2-api
+  flows:
+  - flow: clientCredentials
+    tokenUrl: null
+    note: >-
+      The OAuth 2.0 API catalog entry documents /token and /auth endpoint paths
+      but never their host; the authorization service endpoint is emailed to
+      approved partners only.
+  scopes_supported: []
+  scopes_supported_note: >-
+    Scopes demonstrably exist and are enforced - the public release notes for
+    version 1.3.1 state that the "/token endpoint can result 400 status code
+    with 'invalid_grant' error message if requested oauth scope is not
+    configured in oauth client profile" - but no scope name is published
+    anywhere on the portal. Scopes are configured per OAuth client profile
+    during the approval process.
+scopes: []
+scope_count: 0
+enforcement:
+  model: per-client-profile
+  evidence: >-
+    Empower OAuth 2.0 API release notes v1.3.1 - a requested scope that is not
+    configured on the client profile is rejected with HTTP 400 invalid_grant.

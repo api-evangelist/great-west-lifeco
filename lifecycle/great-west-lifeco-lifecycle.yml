@@ -1,0 +1,70 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://developer.empower.com/docs/status-and-maintenance;
+  https://developer.empower.com/docs/go-production;
+  https://developer.empower.com/api-catalog/oauth2-api;
+  https://developer.empower.com/docs/get-started;
+  https://www.empower.com/financial-professionals/experience/apis
+versioning:
+  scheme: semver-in-release-notes
+  current:
+    empower_oauth2_api: 2.3.0
+  detail: >-
+    Empower surfaces semantic versions in the public release notes on each API
+    catalog page (OAuth 2.0 API v2.3.0 and v1.3.1 are visible anonymously).
+    Canada Life pins a major version in the gateway path (/oauth2/v1/). No
+    version negotiation header or version-support matrix is published.
+  docs: https://developer.empower.com/api-catalog/oauth2-api
+maturity_labels:
+  detail: >-
+    Empower labels every catalog entry with a lifecycle status shown to
+    anonymous visitors: LIVE / "production" means the API is available in
+    production; "Development" means a prototype or pilot is available. The
+    sandbox portal additionally exposes a "test only" category filter. Both
+    publicly listed APIs (Balance API, OAuth 2.0 API) are marked production.
+  source: https://developer.empower.com/docs/get-started
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unpublished
+  detail: >-
+    No deprecation policy, sunset schedule, RFC 8594 Sunset/Deprecation header
+    support, or version end-of-life notice is published anywhere in the group.
+    Absence is the finding.
+sla:
+  url: null
+  uptime_target: null
+  detail: >-
+    No SLA or uptime target is published. Availability is communicated as a
+    prose statement on the status page ("All production APIs are available at
+    this time") rather than as a measured target.
+status_page: https://developer.empower.com/docs/status-and-maintenance
+status_page_detail: >-
+  A hand-maintained availability and maintenance page rather than a live status
+  dashboard - no component-level history, no incident feed, no subscribe
+  option. It publishes the standing maintenance window (Sunday 12:00 am to
+  12:00 pm MST) and the monthly deployment cadence (second weekend of every
+  month).
+release_cadence:
+  deployments: second weekend of every month
+  maintenance_window: Sunday 00:00-12:00 MST
+go_to_production:
+  self_serve: false
+  detail: >-
+    "For guidance to begin using your API in a production environment, contact
+    us by clicking on Support at the top of this page." Promotion from the
+    mock-data sandbox to stage and then to production is a human, ticketed
+    process at every step.
+  url: https://developer.empower.com/docs/go-production
+roadmap:
+  published: true
+  url: https://www.empower.com/financial-professionals/experience/apis
+  upcoming:
+  - name: DC participant personal rate of return
+    detail: Will allow clients to review the overall investment return for their participants' portfolios.
+  - name: DC plan provisions
+    detail: Will provide snapshots of current plan provisions.
+  - name: DC investments
+    detail: Will provide overviews of how plan assets are invested.
+deprecated_operations: []
