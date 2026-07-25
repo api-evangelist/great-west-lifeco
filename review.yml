@@ -1,0 +1,241 @@
+aid: great-west-lifeco
+name: Great-West Lifeco
+review:
+  question: >-
+    Does Great-West Lifeco expose a real, public, self-serve developer portal
+    and downloadable API specifications for its insurance business?
+  answer: partial
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: Canada
+  gated: true
+findings:
+  summary: |
+    Great-West Lifeco, the holding company, publishes no developer surface of
+    its own, and neither does Canada Life, its Canadian operating brand and the
+    entity that actually writes insurance in the home market. Every first-party
+    probe against greatwestlifeco.com and canadalife.com failed: the
+    developer/developers/docs subdomains do not resolve, and the /developers,
+    /api, /developer, /partners and /integrations paths all return 404. The
+    full public English sitemaps for both sites (273 KB for canadalife.com,
+    129 KB for greatwestlifeco.com) contain no API, developer, integration or
+    ACORD page of any kind. This is the expected shape for a Canadian carrier:
+    OSFI supervises prudentially, provincial regulators (FSRA, AMF) handle
+    market conduct, there is no open-insurance mandate, and Consumer-Driven
+    Banking explicitly excludes insurance, so nothing forces a public API.
+
+    The one real developer surface anywhere in the group belongs to Empower,
+    Great-West Lifeco's U.S. retirement recordkeeping subsidiary (formerly
+    Great-West Life & Annuity). https://developer.empower.com/ returns HTTP 200
+    and is a genuine developer portal — a Drupal/Pronovix build with a publicly
+    readable API catalog, getting-started guides, a documented authentication
+    model, a status-and-maintenance page, release notes and a support flow. It
+    is not a marketing page and it is not a bare login wall. It is, however,
+    not self-serve: the two catalog entries state "To see the reference
+    documentation, please login", and keys are issued only after a "Get Access"
+    request is reviewed, with the API key, client ID, client secret and
+    authorization service endpoint delivered afterwards by secure email. No
+    anonymous visitor can retrieve an endpoint list, a base URL, or a
+    specification. Note also that this surface is U.S. retirement plan data,
+    not Canadian insurance — the Canadian book has no public API at all.
+  developerPortal:
+    firstPartyCorporate:
+      - url: https://www.greatwestlifeco.com/
+        status: 200
+        note: Corporate holding-company site. No developer or API content.
+      - url: https://developer.greatwestlifeco.com/
+        status: 000
+        note: Does not resolve.
+      - url: https://developers.greatwestlifeco.com/
+        status: 000
+        note: Does not resolve.
+      - url: https://docs.greatwestlifeco.com/
+        status: 000
+        note: Does not resolve.
+      - url: https://api.greatwestlifeco.com/
+        status: 000
+        note: Does not resolve.
+      - url: https://www.greatwestlifeco.com/developers
+        status: 404
+      - url: https://www.greatwestlifeco.com/api
+        status: 404
+      - url: https://www.greatwestlifeco.com/developer
+        status: 404
+      - url: https://www.greatwestlifeco.com/partners
+        status: 404
+      - url: https://www.greatwestlifeco.com/integrations
+        status: 404
+    canadianOperatingBrand:
+      - url: https://www.canadalife.com/
+        status: 200
+        note: Canadian insurance and wealth brand. No developer or API content.
+      - url: https://developer.canadalife.com/
+        status: 000
+      - url: https://developers.canadalife.com/
+        status: 000
+      - url: https://docs.canadalife.com/
+        status: 000
+      - url: https://api.canadalife.com/
+        status: 403
+        note: Host answers but rejects anonymous requests. Undocumented; not a portal.
+      - url: https://www.canadalife.com/developers
+        status: 404
+      - url: https://www.canadalife.com/api
+        status: 404
+    subsidiaryPortalFound:
+      url: https://developer.empower.com/
+      status: 200
+      classification: real developer portal, publicly readable, but NOT self-serve
+      loginWall: false
+      selfServe: false
+      entity: Empower (U.S. retirement subsidiary of Great-West Lifeco)
+      platform: Drupal with Pronovix developer-portal theme; Cognito/SAML federated login
+      publiclyReadable:
+        - https://developer.empower.com/api-catalog
+        - https://developer.empower.com/api-catalog/balance-api
+        - https://developer.empower.com/api-catalog/oauth2-api
+        - https://developer.empower.com/docs/get-started
+        - https://developer.empower.com/docs/go-production
+        - https://developer.empower.com/docs/status-and-maintenance
+        - https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki
+        - https://developer.empower.com/support
+      gatedBehindLogin:
+        - All API reference documentation ("To see the reference documentation, please login")
+        - Base URLs and endpoint paths
+        - API key, client ID, client secret, authorization service endpoint (emailed after approval)
+    otherSubsidiaries:
+      - url: https://developer.irishlife.ie/
+        status: 000
+        note: Irish Life (Ireland). Does not resolve.
+      - url: https://api.irishlife.ie/
+        status: 000
+      - url: https://docs.empower.com/
+        status: 200
+        note: >-
+          NOT API documentation. Serves a legacy "GWRS Webinars" page for
+          Great-West Retirement Services. Recorded so it is not mistaken for a
+          docs site.
+  specifications:
+    harvested: 0
+    downloadable: false
+    note: |
+      No OpenAPI, Swagger, AsyncAPI or Postman artifact could be retrieved
+      anonymously. The Balance API catalog page states the API was "developed
+      following industry Open API Specification standards", but no document is
+      served publicly. Spec probes against developer.empower.com all returned
+      404 (text/html): /openapi.json, /openapi.yaml, /swagger.json, /api-docs,
+      /spec, /redoc, /sitemap.xml, /sites/default/files/openapi.json,
+      /api-catalog/balance-api/openapi. The openapi/ directory is therefore
+      omitted from this repository rather than filled with anything invented.
+  acordPosture:
+    posture: no ACORD reference found
+    detail: |
+      No occurrence of ACORD, AL3, ACORD XML, NGDS, IVANS, Applied Epic or
+      Vertafore was found on greatwestlifeco.com, canadalife.com, or anywhere
+      in the public pages of developer.empower.com. Both corporate sitemaps
+      were scanned and the Empower portal pages were fetched and grepped
+      directly. Consistent with a Canadian life-and-health carrier and a U.S.
+      retirement recordkeeper: ACORD's centre of gravity in North America is
+      P&C agency download, which is not this group's line of business.
+  insuranceVerbs:
+    quote: not exposed publicly
+    bind: not exposed publicly
+    issue: not exposed publicly
+    fnol: not exposed publicly
+    note: |
+      None of the four insurance API verbs is exposed on any public surface in
+      the group. The only public API catalog entry with business meaning is a
+      read-only retirement balance lookup (Empower Balance API), which is
+      partner-facing, not consumer- or agent-facing, and belongs to the U.S.
+      retirement business rather than to the Canadian insurance book. Canadian
+      group benefits claims flow through incumbent intermediaries and the
+      insurer's own portals, not through a documented public API.
+  authModel:
+    scheme: OAuth 2.0 client_credentials plus API key header, moving to private_key_jwt (PKI)
+    documented: true
+    documentedAt: https://developer.empower.com/docs/get-started
+    detail: |
+      Empower documents an API key supplied as the x-api-key request header,
+      plus OAuth 2.0 with the client_credentials grant for B2B partner
+      integration, exchanged with HTTP Basic (client ID as username, client
+      secret as password) at an authorization token endpoint that is
+      communicated privately to approved partners. Empower states it uses
+      OAuth 2.0 and OpenID Connect, and that from Q4 2024 it requires
+      asymmetric public-key client authentication (private_key_jwt) in support
+      of Financial-grade API (FAPI) security, with symmetric client_secret
+      retained only for read-only APIs on request and after security review.
+      B2C scenarios are handled by contacting Empower.
+    wellKnownProbes:
+      - url: https://developer.empower.com/.well-known/openid-configuration
+        status: 404
+      - url: https://developer.empower.com/.well-known/oauth-authorization-server
+        status: 404
+      - url: https://api.empower.com/.well-known/openid-configuration
+        status: 403
+        note: JSON gateway response; discovery document not served anonymously.
+  webhooks:
+    published: false
+    note: No event catalog, webhook documentation or AsyncAPI was found. Absence is the finding.
+  postman:
+    publicCollection: false
+    note: |
+      The Empower getting-started guide illustrates token retrieval with a
+      Postman screenshot, but no public Postman collection or workspace is
+      linked or published.
+  graphql:
+    published: false
+  grpc:
+    published: false
+  codeRepositories:
+    githubOrganization: none found
+    note: |
+      github.com/greatwestlifeco returns 404. github.com/empower resolves to an
+      unrelated organization named "Empower Campaigns" (empowercampaigns.com)
+      and github.com/canadalife is an unrelated individual user account.
+      Neither is claimed as a company property.
+  transports:
+    - protocol: REST
+      scheme: https
+      documented: partial
+      note: >-
+        Empower catalog names REST APIs and JSON responses, but base URLs and
+        endpoint paths are behind login. api.empower.com answers 403 to
+        anonymous requests and is not documented as a public base URL.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+    - protocol: GraphQL
+      documented: false
+    - protocol: gRPC
+      documented: false
+sources:
+  - url: https://www.greatwestlifeco.com/
+    type: Website
+    note: Group structure (Canada Life, Empower, Irish Life) and key statistics.
+  - url: https://www.greatwestlifeco.com/who-we-are/our-companies/canada-life.html
+    type: Website
+    note: Canada Life lines of business, founded 1847, 2020 amalgamation.
+  - url: https://www.greatwestlifeco.com/who-we-are/our-companies/empower.html
+    type: Website
+    note: Empower is the second-largest U.S. retirement plan recordkeeper by participants.
+  - url: https://www.canadalife.com/
+    type: Website
+    note: Canadian consumer brand. No developer or API navigation anywhere.
+  - url: https://developer.empower.com/
+    type: Portal
+    note: HTTP 200. Real developer portal for the U.S. retirement subsidiary.
+  - url: https://developer.empower.com/api-catalog
+    type: APIReference
+    note: Public catalog listing exactly two production APIs, Balance and OAuth 2.0.
+  - url: https://developer.empower.com/docs/get-started
+    type: Documentation
+    note: Registration, access request, x-api-key header, OAuth2 client_credentials flow.
+  - url: https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki
+    type: Authentication
+    note: OAuth2 and OpenID Connect, private_key_jwt, FAPI alignment from Q4 2024.
+  - url: https://www.canadalife.com/en/sitemap.xml
+    type: Sitemap
+    note: Full English sitemap scanned; no API, developer, integration or ACORD URL.
+  - url: https://www.greatwestlifeco.com/en/sitemap.xml
+    type: Sitemap
+    note: Full English sitemap scanned; no API, developer, integration or ACORD URL.

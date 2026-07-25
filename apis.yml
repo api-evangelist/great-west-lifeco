@@ -1,0 +1,119 @@
+aid: great-west-lifeco
+url: https://raw.githubusercontent.com/api-evangelist/great-west-lifeco/refs/heads/main/apis.yml
+name: Great-West Lifeco
+kind: company
+description: >-
+  Great-West Lifeco Inc. is a Winnipeg-headquartered international financial
+  services holding company and a member of the Power Corporation group, and one
+  of the largest life insurers in North America. It operates through Canada Life
+  in Canada, the United Kingdom, the Isle of Man and Germany, through Irish Life
+  in Ireland, and through Empower in the United States, spanning individual and
+  group life, health and dental, disability and critical illness insurance,
+  annuities and payout products, segregated funds and wealth management,
+  employer-sponsored retirement recordkeeping, and life reinsurance. Its home
+  market is Canada, where it is federally supervised by OSFI for prudential
+  matters while market conduct is regulated province by province, and where no
+  open-insurance mandate exists (Consumer-Driven Banking excludes insurance
+  outright). Its API posture reflects that absence of a forcing function: the
+  Great-West Lifeco corporate site and the Canadian operating brand,
+  canadalife.com, publish no developer portal, no API documentation and no
+  machine-readable specifications, and probes of developer/api/docs subdomains
+  and /developers, /api, /developer, /partners and /integrations paths return
+  no such surface. The only public developer surface anywhere in the group
+  belongs to the U.S. retirement subsidiary Empower, whose developer portal
+  lists a small production API catalog publicly but places every piece of
+  reference documentation behind login and issues API keys and OAuth client
+  credentials only after an access request is reviewed and approved. There is
+  no downloadable OpenAPI, no public Postman collection, no webhook or event
+  catalog, and no ACORD, AL3 or IVANS reference anywhere on the group's public
+  properties.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Insurance
+- Canada
+- Life Insurance
+- Health Insurance
+- Employee Benefits
+- Retirement
+- Wealth Management
+- Reinsurance
+- Annuities
+- Partner Gated
+created: '2026-07-25'
+modified: '2026-07-25'
+specificationVersion: '0.19'
+apis:
+- aid: great-west-lifeco:empower-balance-api
+  name: Empower Balance API
+  description: >-
+    Listed in the public API catalog of the Empower developer portal, operated
+    by Great-West Lifeco's U.S. retirement subsidiary Empower. Marked
+    "production" and categorized "financial", it returns participant-level
+    balance data for employer-sponsored retirement plans, including total
+    balances, investments, loans and vesting balances, in JSON, for integration
+    into Empower client and partner solutions. The catalog page is public and
+    states the API was developed following OpenAPI Specification standards, but
+    the reference documentation itself is gated ("To see the reference
+    documentation, please login") and access is granted only through the portal
+    "Get Access" request flow, after which an API key and OAuth client
+    credentials are delivered by secure email. No machine-readable
+    specification, base URL, or endpoint list is published anonymously.
+  humanURL: https://developer.empower.com/api-catalog/balance-api
+  tags:
+  - Retirement
+  - Balances
+  - Financial
+  - Read Only
+  - Login Gated
+  properties:
+  - type: Documentation
+    url: https://developer.empower.com/api-catalog/balance-api
+  - type: Documentation
+    url: https://developer.empower.com/docs/get-started
+- aid: great-west-lifeco:empower-oauth-2-0-api
+  name: Empower OAuth 2.0 API
+  description: >-
+    The authorization API for Empower's API suite, listed as "production" in the
+    public Empower developer portal catalog. It generates bearer access tokens
+    used to authorize calls to the other Empower APIs. Public release notes on
+    the catalog page document /auth and /token endpoints, an optional x-api-key
+    header on both, and an invalid_grant 400 response when a requested OAuth
+    scope is not configured on the client profile. Empower documents OAuth 2.0
+    and OpenID Connect with the client_credentials grant for B2B partner
+    integration, and is moving to asymmetric private-key JWT client
+    authentication (PKI) in line with Financial-grade API (FAPI) practice.
+    Reference documentation is behind login and the authorization service
+    endpoint is communicated privately to approved partners.
+  humanURL: https://developer.empower.com/api-catalog/oauth2-api
+  tags:
+  - OAuth
+  - Authorization
+  - Security
+  - OpenID Connect
+  - Login Gated
+  properties:
+  - type: Documentation
+    url: https://developer.empower.com/api-catalog/oauth2-api
+  - type: Authentication
+    url: https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki
+common:
+- type: Website
+  url: https://www.greatwestlifeco.com/
+- type: About
+  url: https://www.greatwestlifeco.com/who-we-are/about-us.html
+- type: News
+  url: https://www.greatwestlifeco.com/news-and-events/news.html
+- type: Portal
+  url: https://developer.empower.com/
+  name: Empower Retirement Developer Portal (U.S. subsidiary)
+- type: Documentation
+  url: https://developer.empower.com/docs/get-started
+- type: Support
+  url: https://developer.empower.com/support
+- type: StatusPage
+  url: https://developer.empower.com/docs/status-and-maintenance
+- type: TermsOfService
+  url: https://developer.empower.com/DevTerms
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
