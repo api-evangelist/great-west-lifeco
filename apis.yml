@@ -111,6 +111,12 @@ apis:
   humanURL: https://developer.empower.com/api-catalog/oauth2-api
   baseURL: https://api.empower.com
   tags:
+  - Authentication
+  - Authorization
+  - Security
+  - OpenID Connect
+  - Login Gated
+  tags_raw:
   - OAuth
   - Authorization
   - Security
@@ -149,6 +155,12 @@ apis:
   humanURL: https://www.canadalife.com/
   baseURL: https://api.canadalife.com
   tags:
+  - Authentication
+  - OpenID Connect
+  - Authorization
+  - Canada
+  - Partner Gated
+  tags_raw:
   - OAuth
   - OpenID Connect
   - Authorization
