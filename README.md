@@ -1,4 +1,4 @@
-# Great-West Lifeco (great-west-lifeco)
+# Great-West Lifeco
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,71 +64,104 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Great-West Lifeco Inc. is a Winnipeg-headquartered international financial services holding company and a member of the Power Corporation group, and one of the largest life insurers in North America. It operates through Canada Life in Canada, the United Kingdom, the Isle of Man and Germany, through Irish Life in Ireland, and through Empower in the United States, spanning individual and group life, health and dental, disability and critical illness insurance, annuities and payout products, segregated funds and wealth management, employer-sponsored retirement recordkeeping, and life reinsurance.
+Great-West Lifeco Inc. is a Winnipeg-headquartered international financial services holding company and a member of the Power Corporation group, and one of the largest life insurers in North America. It operates through Canada Life in Canada, the United Kingdom, the Isle of Man and Germany, through Irish Life in Ireland, and through Empower in the United States, spanning individual and group life, health and dental, disability and critical illness insurance, annuities and payout products, segregated funds and wealth management, employer-sponsored retirement recordkeeping, and life reinsurance. Its home market is Canada, where it is federally supervised by OSFI for prudential matters while market conduct is regulated province by province, and where no open-insurance mandate exists (Consumer-Driven Banking excludes insurance outright). Its API posture reflects that absence of a forcing function: the Great-West Lifeco corporate site and the Canadian consumer site canadalife.com publish no developer portal and no API documentation, and probes of developer/docs subdomains and /developers, /api, /developer, /partners and /integrations paths return no such surface. Two production API surfaces nevertheless exist inside the group, both partner-gated and unrelated to each other. Canada Life runs an Apigee gateway at api.canadalife.com that serves a real OpenID Connect discovery document anonymously - issuer, JWKS, token, revocation and userinfo endpoints, with the authorization endpoint deliberately published as "authorize-NOT-SUPPORTED" and an empty scopes_supported array - and whose error envelopes point to https://apimarketplace.canadalife.com, a digitalML-hosted API marketplace that does not resolve publicly. The U.S. retirement subsidiary Empower runs a genuine developer portal that lists two production APIs publicly while naming eight API products plus three coming soon on its marketing site, places every piece of reference documentation behind login, documents an x-api-key header with OAuth 2.0 client_credentials and private_key_jwt in support of FAPI, publishes release notes, a maintenance window and a mock-data sandbox, and issues credentials only after a reviewed access request. There is no downloadable OpenAPI anywhere, no public Postman collection, no SDK, no MCP server, no webhook or event catalog, and no ACORD, AL3 or IVANS reference on any public property in the group.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/great-west-lifeco/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/great-west-lifeco/refs/heads/main/apis.yml)
+**Areas:** Insurance · Canada · Life Insurance · Health Insurance · Employee Benefits · Retirement · Wealth Management · Reinsurance · Annuities
 
-## API posture
+## Great-West Lifeco on APIs.io
 
-Great-West Lifeco's home market is Canada, where OSFI supervises federally regulated insurers prudentially and the provinces (FSRA in Ontario, AMF in Quebec) regulate market conduct. There is no open-insurance mandate, and Consumer-Driven Banking — Canada's open-banking framework — excludes insurance entirely. Nothing forces a public API, and none exists.
+Everything profiled for Great-West Lifeco is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/great-west-lifeco/](https://apis.io/providers/great-west-lifeco/)** — or go straight to one of the APIs or properties below.
 
-The holding company publishes no developer surface, and neither does Canada Life, the Canadian operating brand. Probes of `developer.`, `developers.`, `docs.` and `api.` subdomains and of the `/developers`, `/api`, `/developer`, `/partners` and `/integrations` paths on both greatwestlifeco.com and canadalife.com returned no portal. The full public English sitemaps of both sites contain no API, developer, integration or ACORD page.
+### APIs (3)
 
-The one real developer surface in the group belongs to **Empower**, the U.S. retirement recordkeeping subsidiary. [developer.empower.com](https://developer.empower.com/) returns HTTP 200 and is a genuine developer portal with a publicly readable API catalog, getting-started guides, a documented authentication model, release notes and a status page. It is not self-serve: reference documentation sits behind login, and API keys and OAuth client credentials are issued only after an access request is reviewed and approved, then delivered by secure email. No OpenAPI, Swagger, AsyncAPI or public Postman artifact is published, and there is no ACORD, AL3 or IVANS reference anywhere on the group's public properties.
+- [Empower Balance API](https://apis.io/apis/great-west-lifeco/empower-balance-api/) — Listed in the public API catalog of the Empower developer portal, operated by Great-West Lifeco's U.S. retirement subsidiary Empower. Marked "production"…
+- [Empower OAuth 2.0 API](https://apis.io/apis/great-west-lifeco/empower-oauth-2-0-api/) — The authorization API for Empower's API suite, listed as "production" in the public Empower developer portal catalog. It generates bearer access tokens used…
+- [Canada Life API Gateway (OAuth 2.0 / OpenID Connect)](https://apis.io/apis/great-west-lifeco/canada-life-api-gateway/) — The production API gateway of Canada Life, Great-West Lifeco's Canadian operating brand, at api.canadalife.com. It publishes no documentation, but it does…
 
-## Tags
+### Published properties
 
-- Insurance
-- Canada
-- Life Insurance
-- Health Insurance
-- Employee Benefits
-- Retirement
-- Wealth Management
-- Reinsurance
-- Annuities
-- Partner Gated
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### Security (3)
 
-- **Created:** 2026-07-25
-- **Modified:** 2026-07-25
+Authentication, trust centre, and vulnerability disclosure.
 
-## APIs
+- [Great West Lifeco Authentication](https://apis.io/security/great-west-lifeco/great-west-lifeco-authentication/)
+- [Great West Lifeco Domain Security](https://apis.io/security/great-west-lifeco/great-west-lifeco-domain-security/)
+- [Great West Lifeco Trust Center](https://apis.io/security/great-west-lifeco/great-west-lifeco-trust-center/)
 
-### Empower Balance API
+#### OAuth scopes (1)
 
-Listed in the public API catalog of the Empower developer portal, operated by Great-West Lifeco's U.S. retirement subsidiary Empower. Marked "production" and categorized "financial", it returns participant-level balance data for employer-sponsored retirement plans, including total balances, investments, loans and vesting balances, in JSON. Reference documentation is gated behind login and access is granted only through the portal's request flow.
+The permissions the API asks for.
 
-- **Human URL:** [https://developer.empower.com/api-catalog/balance-api](https://developer.empower.com/api-catalog/balance-api)
+- [Great West Lifeco Scopes](https://apis.io/scopes/great-west-lifeco/great-west-lifeco-scopes/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://developer.empower.com/api-catalog/balance-api)
-- [Documentation](https://developer.empower.com/docs/get-started)
-
-### Empower OAuth 2.0 API
-
-The authorization API for Empower's API suite, listed as "production" in the public catalog. Public release notes document `/auth` and `/token` endpoints, an optional `x-api-key` header, and an `invalid_grant` 400 response when a requested OAuth scope is not configured on the client profile. Empower documents OAuth 2.0 and OpenID Connect with the `client_credentials` grant, moving to asymmetric `private_key_jwt` client authentication in support of Financial-grade API (FAPI) security.
-
-- **Human URL:** [https://developer.empower.com/api-catalog/oauth2-api](https://developer.empower.com/api-catalog/oauth2-api)
-
-#### Properties
-
-- [Documentation](https://developer.empower.com/api-catalog/oauth2-api)
-- [Authentication](https://developer.empower.com/docs/additional-security-protocols-publicprivate-key-infrastructure-pki)
-
-## Links
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.greatwestlifeco.com/)
-- [About](https://www.greatwestlifeco.com/who-we-are/about-us.html)
-- [News](https://www.greatwestlifeco.com/news-and-events/news.html)
-- [Empower Retirement Developer Portal](https://developer.empower.com/)
-- [Getting Started](https://developer.empower.com/docs/get-started)
+- [Documentation](https://developer.empower.com/docs/get-started)
+- [Getting started](https://developer.empower.com/docs/get-started)
+- [API reference](https://developer.empower.com/api-catalog)
+- [Sign up](https://developer.empower.com/hybridauth-connect/authenticate/cognito)
 - [Support](https://developer.empower.com/support)
-- [Status and Maintenance](https://developer.empower.com/docs/status-and-maintenance)
-- [Developer Terms of Use](https://developer.empower.com/DevTerms)
+- [Compliance](https://www.empower.com/financial-professionals/about-empower/cybersecurity)
+- [Terms of service](https://developer.empower.com/DevTerms)
+- [Privacy policy](https://www.greatwestlifeco.com/privacy-policy.html)
+- [Status](https://developer.empower.com/docs/status-and-maintenance)
 
-## Review
+## API Evangelist rating
 
-See [review.yml](review.yml) for the full API Evangelist review, including every probed URL and its HTTP status, the ACORD posture, the authentication model, and the reasoning behind the honest "partner-gated, no public specifications" finding.
+**Kin Score 40.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 72.3 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 61.9 |
+| Access clarity | 50.0 |
+
+**Agent readiness 9.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 41.2** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/great-west-lifeco/](https://apis.io/providers/great-west-lifeco/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Great-West Lifeco: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/great-west-lifeco/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
